@@ -1,15 +1,29 @@
 #
-# CentOs 6.5 Oracle Java 6 Dockerfile
+# MAINTAINER        Carson,C.J.Zeong <zcy@nicescale.com>
+# DOCKER-VERSION    1.6.2
 #
+# Dockerizing CentOS7: Dockerfile for building CentOS images
+#
+FROM       centos:centos7.1.1503
+MAINTAINER Carson,C.J.Zeong <zcy@nicescale.com>
 
-FROM vishy/centos 
-MAINTAINER Vishwanath T K "vishwanath.tk@gmail.com" RUN yum -y update
-RUN yum -y install openssh-server openssh-clients
-RUN echo 'root:centos' |chpasswd
-RUN service sshd start
-RUN rm -f /etc/bashrc
-ADD files/color_prompt /etc/color_prompt
-ADD files/bashrc /etc/bashrc
-ADD files/.bashrc /root/.bashrc
-ADD files/.bash_profile /root/.bash_profile
-EXPOSE 22 CMD /usr/sbin/sshd -D
+ENV TZ "Asia/Shanghai"
+ENV TERM xterm
+
+ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
+ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo
+
+RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && \
+    yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel && \
+    yum install -y --enablerepo=epel pwgen python-pip && \
+    yum clean all
+
+RUN pip install supervisor
+ADD supervisord.conf /etc/supervisord.conf
+
+RUN mkdir -p /etc/supervisor.conf.d && \
+    mkdir -p /var/log/supervisor
+
+EXPOSE 22
+
+ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
