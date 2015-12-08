@@ -1,17 +1,16 @@
 #
-# MAINTAINER        Carson,C.J.Zeong <zcy@nicescale.com>
 # DOCKER-VERSION    1.6.2
 #
-# Dockerizing CentOS7: Dockerfile for building CentOS images
+# Dockerizing CentOS6.5: Dockerfile for building CentOS images
 #
-FROM       centos:centos7.1.1503
-MAINTAINER Carson,C.J.Zeong <zcy@nicescale.com>
+FROM       centos:centos6.5
+MAINTAINER ninglei <ninglei_1@sina.com>
 
 ENV TZ "Asia/Shanghai"
 ENV TERM xterm
 
-ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
-ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo
+#ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
+#ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo
 
 RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && \
     yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel && \
