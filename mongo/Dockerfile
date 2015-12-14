@@ -4,18 +4,21 @@
 
 
 
-FROM centos                             # Base container on latest CentOS release
+# Base container on latest CentOS release
+FROM centos
 
 MAINTAINER Lei Ning <ninglei_1@sina.com>
 
 
+# Copy yum repo config file to add MongoDB repo
+COPY mongodb.repo /etc/yum.repos.d/
+# Install mongod
+RUN yum install -y mongodb-org-server
 
-COPY mongodb.repo /etc/yum.repos.d/     # Copy yum repo config file to add MongoDB repo
-
-RUN yum install -y mongodb-org-server   # Install mongod
-
-RUN mkdir -p /data/db                   # Create default dbpath
+# Create default dbpath
+RUN mkdir -p /data/db
 
 
 
-ENTRYPOINT [ "mongod" ]                 # Execute the mongod binary on container startup
+# Execute the mongod binary on container startup
+ENTRYPOINT [ "mongod" ]
