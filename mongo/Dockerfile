@@ -13,7 +13,7 @@ MAINTAINER Lei Ning <ninglei_1@sina.com>
 # Copy yum repo config file to add MongoDB repo
 COPY mongodb.repo /etc/yum.repos.d/
 # Install mongod
-RUN yum install -y mongodb-org-server
+RUN yum install -y mongodb-org
 
 # Create default dbpath
 RUN mkdir -p /data/db
